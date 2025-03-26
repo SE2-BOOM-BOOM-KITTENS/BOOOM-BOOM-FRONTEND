@@ -44,8 +44,7 @@ android {
     testOptions {
         unitTests {
             all {
-                it.useJUnitPlatform()
-                it.finalizedBy(tasks.named("jacocoTestReport"))
+                it.useJUnitPlatform()  // Ensuring JUnit 5 compatibility
             }
         }
     }
@@ -68,15 +67,13 @@ android {
             "android/**/*.*"
         )
 
-        val debugTree =
-            fileTree("${project.layout.buildDirectory.get().asFile}/tmp/kotlin-classes/debug") {
-                exclude(fileFilter)
-            }
+        val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
+            exclude(fileFilter)
+        }
 
-        val javaDebugTree =
-            fileTree("${project.layout.buildDirectory.get().asFile}/intermediates/javac/debug") {
-                exclude(fileFilter)
-            }
+        val kotlinDebugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+            exclude(fileFilter)
+        }
 
         val mainSrc = listOf(
             "${project.projectDir}/src/main/java",
@@ -84,8 +81,8 @@ android {
         )
 
         sourceDirectories.setFrom(files(mainSrc))
-        classDirectories.setFrom(files(debugTree, javaDebugTree))
-        executionData.setFrom(fileTree(project.layout.buildDirectory.get().asFile) {
+        classDirectories.setFrom(files(debugTree, kotlinDebugTree))
+        executionData.setFrom(fileTree(buildDir) {
             include("jacoco/testDebugUnitTest.exec")
             include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
         })
@@ -101,7 +98,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
@@ -110,7 +106,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
