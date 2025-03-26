@@ -67,13 +67,9 @@ android {
             "android/**/*.*"
         )
 
-        val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
-            exclude(fileFilter)
-        }
+        val debugTree = fileTree(mapOf("dir" to "${buildDir}/intermediates/javac/debug", "excludes" to fileFilter))
 
-        val kotlinDebugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
-            exclude(fileFilter)
-        }
+        val kotlinDebugTree = fileTree(mapOf("dir" to "${buildDir}/tmp/kotlin-classes/debug", "excludes" to fileFilter))
 
         val mainSrc = listOf(
             "${project.projectDir}/src/main/java",
