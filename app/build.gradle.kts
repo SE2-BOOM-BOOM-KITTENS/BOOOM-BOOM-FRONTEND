@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "com.example.boomboomfrontend"
     compileSdk = 33
+    buildToolsVersion = "33.0.1"
 
     defaultConfig {
         applicationId = "com.example.boomboomfrontend"
@@ -34,6 +35,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -49,10 +51,30 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    tasks.withType<Test> {
-        useJUnitPlatform()
-        finalizedBy("jacocoTestReport")
+}
+
+tasks.register("jacocoTestReport", JacocoReport::class) {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
     }
+
+    classDirectories.setFrom(
+        fileTree("${buildDir}/intermediates/javac/debug") {
+            include("**/classes/**")
+        },
+        fileTree("${buildDir}/tmp/kotlin-classes/debug")
+    )
+    sourceDirectories.setFrom(
+        files("src/main/java", "src/main/kotlin")
+    )
+    executionData.setFrom(
+        fileTree("${buildDir}/jacoco") {
+            include("testDebugUnitTest.exec")
+        }
+    )
 }
 
 dependencies {
@@ -65,6 +87,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+
+    implementation("com.android.tools:desugar_jdk_libs:2.0.3")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -79,5 +104,10 @@ sonar {
         property("sonar.projectKey", "SE2-BOOM-BOOM-KITTENS_BOOOM-BOOM-FRONTEND")
         property("sonar.organization", "se2-boom-boom-kittens")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.sources", "src/main/java,src/main/kotlin")
+        property("sonar.tests", "src/test/java,src/androidTest/java")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+        property("sonar.language", "kotlin")
+        property("sonar.java.binaries", "${buildDir}/classes")
     }
 }
