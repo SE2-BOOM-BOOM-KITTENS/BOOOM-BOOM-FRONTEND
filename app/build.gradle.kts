@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.sonarqube") version "6.0.1.5171"
 }
 
 android {
@@ -66,4 +67,12 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "SE2-BOOM-BOOM-KITTENS_BOOOM-BOOM-FRONTEND")
+        property("sonar.organization", "se2-boom-boom-kittens")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
