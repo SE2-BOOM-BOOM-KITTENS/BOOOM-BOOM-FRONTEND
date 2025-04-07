@@ -10,7 +10,7 @@ class DefuseEffectTest {
 
     @Test
     fun `defuse effect decreases count`(){
-        val player = Player (id = "1", name = "Player1", defuseCount = 1)
+        val player = Player (id = "1", name = "Player1", defuseCount = 1, isAlive = true)
         val effect = DefuseEffect()
         val gameManager = GameManager()
 

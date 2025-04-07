@@ -10,7 +10,7 @@ class ExplodingKittenEffectTest {
 
     @Test
     fun `exploding kitten kills player without defuse`(){
-        val player = Player (id = "1", name = "Player1", defuseCount = 0)
+        val player = Player (id = "1", name = "Player1", defuseCount = 0, isAlive = true)
         val effect = ExplodingKittenEffect()
         val gameManager = GameManager()
 
@@ -21,7 +21,7 @@ class ExplodingKittenEffectTest {
 
     @Test
     fun `exploding kitten defused when player has defuse card`(){
-        val player = Player (id = "2", name = "Player2", defuseCount = 1)
+        val player = Player (id = "2", name = "Player2", defuseCount = 1, isAlive = true)
         val effect = ExplodingKittenEffect()
         val gameManager = GameManager()
 
