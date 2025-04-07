@@ -1,9 +1,8 @@
 package com.example.boomboomfrontend.logic
 
-import com.example.boomboomfrontend.model.*
-import com.example.boomboomfrontend.model.basic.BlankCard
-import com.example.boomboomfrontend.model.basic.DefuseCard
-import com.example.boomboomfrontend.model.basic.ExplodingKittenCard
+import com.example.boomboomfrontend.model.Card
+import com.example.boomboomfrontend.model.CardType
+import com.example.boomboomfrontend.model.Player
 import kotlin.random.Random
 
 class CardManager {
@@ -15,16 +14,14 @@ class CardManager {
         deck.clear()
 
         // Sprint 1: Nur drei Kartentypen
-        repeat(players.size - 1) { deck.add(ExplodingKittenCard()) }
-        repeat(players.size) { deck.add(DefuseCard()) }
-        repeat(10) { deck.add(BlankCard()) }
+        repeat(players.size - 1) { deck.add(Card(CardType.EXPLODING_KITTEN)) }
+        repeat(players.size) { deck.add(Card(CardType.DEFUSE)) }
+        repeat(10) { deck.add(Card(CardType.BLANK)) }
 
         deck.shuffle()
     }
 
-    fun drawCard(): Card? {
-        return if (deck.isNotEmpty()) deck.removeFirst() else null
-    }
+    fun drawCard(): Card? = if (deck.isNotEmpty()) deck.removeFirst() else null
 
     fun playCard(card: Card, player: Player): Boolean {
         return if (player.hand.remove(card)) {
