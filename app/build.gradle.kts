@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.sonarqube") version "5.1.0.4882"
     id("jacoco")
+
 }
 
 android {
@@ -97,6 +98,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation("org.hildan.krossbow:krossbow-websocket-okhttp:7.0.0")
     implementation("org.hildan.krossbow:krossbow-stomp-core:7.0.0")
@@ -123,8 +125,12 @@ dependencies {
 
 sonar {
     properties {
-        property("sonar.projectKey", "SE2-BOOM-BOOM-KITTENS_BOOOM-BOOM-FRONTEND")
-        property("sonar.organization", "se2-boom-boom-kittens")
-        property("sonar.host.url", "https://sonarcloud.io")
+            property("sonar.projectKey", "DEIN_ORG_KEY:DEIN_PROJECT_NAME")
+            property("sonar.organization", "DEIN_ORG_NAME")
+            property("sonar.host.url", "https://sonarcloud.io")
+            property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
+
+
+

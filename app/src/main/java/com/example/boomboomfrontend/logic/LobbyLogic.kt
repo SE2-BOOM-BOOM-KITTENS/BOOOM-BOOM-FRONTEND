@@ -1,15 +1,9 @@
 package com.example.boomboomfrontend.logic
 
+import Player
+import com.example.boomboomfrontend.model.ConnectionStatus.*
 import kotlinx.coroutines.*
 import kotlin.random.Random
-
-// Enum für Netzwerkstatus
-enum class ConnectionStatus {
-    JOINED, CONNECTION_PENDING, NOT_CONNECTED
-}
-
-// Datenklasse für Spieler
-data class Player(val name: String, var status: ConnectionStatus)
 
 // Lobby Klasse
 class Lobby(private val host: Player, private val maxPlayers: Int) {
@@ -27,7 +21,7 @@ class Lobby(private val host: Player, private val maxPlayers: Int) {
             println("${player.name} konnte nicht beitreten. Raum ist voll!")
             return false
         }
-        player.status = ConnectionStatus.CONNECTION_PENDING
+        player.status = CONNECTION_PENDING
         players.add(player)
         println("${player.name} ist beigetreten. Status: ${player.status}")
         simulateConnection(player)
@@ -37,14 +31,14 @@ class Lobby(private val host: Player, private val maxPlayers: Int) {
     private fun simulateConnection(player: Player) {
         scope.launch {
             delay(Random.nextLong(1000, 3000)) // Simulierte Verbindungszeit
-            player.status = ConnectionStatus.JOINED
+            player.status = JOINED
             println("${player.name} ist jetzt verbunden!")
             checkAndStartGame()
         }
     }
 
     private fun checkAndStartGame() {
-        if (players.all { it.status == ConnectionStatus.JOINED }) {
+        if (players.all { it.status == JOINED }) {
             startCountdown()
         }
     }
@@ -71,14 +65,14 @@ class Lobby(private val host: Player, private val maxPlayers: Int) {
 }
 
 fun main() {
-    val host = Player("Host", ConnectionStatus.JOINED)
+    val host = Player("Host", JOINED)
     val lobby = Lobby(host, 4)
     println("Lobby erstellt! Code: ${lobby.getRoomCode()}")
 
     val players = listOf(
-        Player("Spieler1", ConnectionStatus.NOT_CONNECTED),
-        Player("Spieler2", ConnectionStatus.NOT_CONNECTED),
-        Player("Spieler3", ConnectionStatus.NOT_CONNECTED)
+        Player("Spieler1", NOT_CONNECTED),
+        Player("Spieler2", NOT_CONNECTED),
+        Player("Spieler3", NOT_CONNECTED)
     )
 
     players.forEach { lobby.joinLobby(it) }

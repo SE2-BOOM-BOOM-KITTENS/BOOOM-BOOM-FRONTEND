@@ -1,5 +1,6 @@
-package com.example.boomboomfrontend
+package com.example.boomboomfrontend.activities
 
+import Player
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,13 +15,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import com.example.boomboomfrontend.logic.Lobby
-import com.example.boomboomfrontend.logic.Player
-import com.example.boomboomfrontend.model.ConnectionStatus
 import com.example.boomboomfrontend.ui.theme.BoomBoomFrontendTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,7 +47,7 @@ fun LobbyScreen() {
 
         Button(onClick = {
             if(name.isNotBlank()){
-                val host = Player(name, com.example.boomboomfrontend.logic.ConnectionStatus.JOINED)
+                val host = Player(name, com.example.boomboomfrontend.model.ConnectionStatus.JOINED)
                 lobby = Lobby(host, maxPlayers = 4)
             }
         }) {
@@ -65,7 +63,7 @@ fun LobbyScreen() {
         Spacer(Modifier.height(8.dp))
 
         Button(onClick = {
-            val p = Player(name = "Player", com.example.boomboomfrontend.logic.ConnectionStatus.NOT_CONNECTED)
+            val p = Player(name = "Player", com.example.boomboomfrontend.model.ConnectionStatus.NOT_CONNECTED)
             if (lobby?.joinLobby(p) == true) {
                 joined = true
             }
