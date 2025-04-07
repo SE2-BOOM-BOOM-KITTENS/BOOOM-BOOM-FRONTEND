@@ -4,10 +4,6 @@ data class Player(
     val name: String,
     val hand: MutableList<Card>
 ) {
-    //Gibt true zurück, wenn der Spieler mindestens eine Defuse-Karte auf der Hand hat
-    fun hasDefuse(): Boolean {
-        return hand.any { it is basic.DefuseCard }
-    }
 
      //Simuliert die Auswahl einer Position, wo eine Exploding Kitten-Karte ins Deck gelegt wird.
      //Aktuell über Konsole. Später wird das durch UI ersetzt.
