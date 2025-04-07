@@ -45,7 +45,7 @@ fun LobbyScreen() {
 
         Button(onClick = {
             if (name.isNotBlank()) {
-                val host = Player(name, ConnectionStatus.JOINED)
+                val host = Player(id = "0", name, ConnectionStatus.JOINED)
                 lobby = Lobby(host, maxPlayers = 4)
             }
         }) {
@@ -61,7 +61,7 @@ fun LobbyScreen() {
         Spacer(Modifier.height(8.dp))
 
         Button(onClick = {
-            val p = Player(name = "Player", ConnectionStatus.NOT_CONNECTED)
+            val p = Player(id = "1", name = "Player", ConnectionStatus.NOT_CONNECTED)
             if (lobby?.joinLobby(p) == true) {
                 joined = true
             }

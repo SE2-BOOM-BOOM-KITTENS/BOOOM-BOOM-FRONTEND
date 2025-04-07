@@ -1,6 +1,6 @@
 package com.example.boomboomfrontend.logic
 
-import Player
+import com.example.boomboomfrontend.model.Player
 import com.example.boomboomfrontend.model.ConnectionStatus.*
 import kotlinx.coroutines.*
 import kotlin.random.Random
@@ -65,14 +65,14 @@ class Lobby(private val host: Player, private val maxPlayers: Int) {
 }
 
 fun main() {
-    val host = Player("Host", JOINED)
+    val host = Player("0", "Host", JOINED, 1, true)
     val lobby = Lobby(host, 4)
     println("Lobby erstellt! Code: ${lobby.getRoomCode()}")
 
     val players = listOf(
-        Player("Spieler1", NOT_CONNECTED),
-        Player("Spieler2", NOT_CONNECTED),
-        Player("Spieler3", NOT_CONNECTED)
+        Player("1", "Spieler1", NOT_CONNECTED, 1, true),
+        Player("2", "Spieler2", NOT_CONNECTED, 1, true),
+        Player("3", "Spieler3", NOT_CONNECTED, 1, true)
     )
 
     players.forEach { lobby.joinLobby(it) }
