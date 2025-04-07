@@ -41,5 +41,7 @@ class CardManager {
     }
 
     fun deckSize(): Int = deck.size
+
+    fun getDiscardPile(): List<Card> = discardPile
 }
 

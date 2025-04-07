@@ -3,7 +3,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import com.example.boomboomfrontend.logic.*
 import com.example.boomboomfrontend.model.*
-import com.example.boomboomfrontend.model.basic.*
 
 class CardManagementTest {
 
@@ -14,6 +13,7 @@ class CardManagementTest {
 
     @BeforeEach
     fun setup() {
+        //Spieler mit einer BLANK-Karte ausstatten
         testPlayer = Player("Test", mutableListOf(BlankCard()))
         players = mutableListOf(testPlayer)
         cardManager = CardManager()
@@ -32,13 +32,13 @@ class CardManagementTest {
 
     @Test
     fun `playCard removes from hand and adds to discardPile`() {
-        val card = BlankCard()
+        val card = Card(CardType.BLANK)
         testPlayer.hand.add(card)
 
         val result = cardManager.playCard(card, testPlayer)
 
-        assertTrue(result)
-        assertFalse(testPlayer.hand.contains(card))
-        assertTrue(cardManager.getDiscardPile().contains(card))
+        assertTrue(result, "Card should be successfully played")
+        assertFalse(testPlayer.hand.contains(card), "Card should be removed from hand")
+        assertTrue(cardManager.getDiscardPile().contains(card), "Card should be in discard pile")
     }
 }

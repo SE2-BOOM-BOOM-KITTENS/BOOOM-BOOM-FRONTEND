@@ -3,7 +3,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import com.example.boomboomfrontend.logic.*
 import com.example.boomboomfrontend.model.*
-import com.example.boomboomfrontend.model.basic.*
 
 class GameManagerTest {
 
@@ -26,13 +25,33 @@ class GameManagerTest {
         val initialDeckSize = cardManager.deckSize()
         val initialHandSize = testPlayer.hand.size
 
+        // Spieler spielt die erste Karte aus der Hand
         gameManager.startTurn(testPlayer)
+        // Spieler beendet den Zug (zieht Karte)
         gameManager.endTurn()
 
-        // Handgröße bleibt gleich (1 gespielt, 1 gezogen)
+        // Erwartung: 1 Karte gespielt, 1 neue gezogen → Handgröße bleibt gleich
         assertEquals(initialHandSize, testPlayer.hand.size)
 
-        // Deck wurde um 1 verkleinert
+        // Erwartung: 1 Karte wurde gezogen → Deckgröße reduziert sich um 1
+        assertEquals(initialDeckSize - 1, cardManager.deckSize())
+    }
+
+    @Test
+    fun `Zug ohne Karte spielen funktioniert ebenfalls`() {
+        // Leere Hand → Spieler kann nichts spielen
+        testPlayer.hand.clear()
+
+        val initialDeckSize = cardManager.deckSize()
+        val initialHandSize = testPlayer.hand.size
+
+        gameManager.startTurn(testPlayer) // sollte nichts tun
+        gameManager.endTurn()             // Spieler zieht nur eine Karte
+
+        // Erwartung: Handgröße +1 (nur Karte gezogen)
+        assertEquals(initialHandSize + 1, testPlayer.hand.size)
+
+        // Erwartung: Deckgröße -1
         assertEquals(initialDeckSize - 1, cardManager.deckSize())
     }
 
