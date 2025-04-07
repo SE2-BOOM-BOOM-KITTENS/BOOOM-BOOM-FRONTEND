@@ -1,15 +1,21 @@
-package com.example.boomboomfrontend
+package com.example.boomboomfrontend.activities
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.boomboomfrontend.logic.Lobby
+import com.example.boomboomfrontend.model.ConnectionStatus
+import com.example.boomboomfrontend.model.Player
 import com.example.boomboomfrontend.ui.theme.BoomBoomFrontendTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,30 +23,148 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BoomBoomFrontendTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                LobbyScreen()
             }
         }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LobbyScreen() {
+    var name by remember { mutableStateOf("") }
+    var lobby: Lobby? by remember { mutableStateOf(null) }
+    var joined by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Dein Name:")
+        TextField(value = name, onValueChange = { name = it })
+
+        Spacer(Modifier.height(8.dp))
+
+        Button(onClick = {
+            if (name.isNotBlank()) {
+                val host = Player(name, ConnectionStatus.JOINED)
+                lobby = Lobby(host, maxPlayers = 4)
+            }
+        }) {
+            Text("Lobby erstellen")
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        lobby?.let {
+            Text("Lobby-Code: ${it.getRoomCode()}")
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        Button(onClick = {
+            val p = Player(name = "Player", ConnectionStatus.NOT_CONNECTED)
+            if (lobby?.joinLobby(p) == true) {
+                joined = true
+            }
+        }) {
+            Text("Lobby beitreten")
+        }
+
+        Spacer(Modifier.height(16.dp))
+        Text("Status: ${if (joined) "Beigetreten" else "Nicht verbunden"}")
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun ArrangementUI() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            CardUI()
+            DeckUI()
+        }
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        PlayerHands()
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        OpponentHands()
+    }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun CardUI() {
+    Box(
+        modifier = Modifier
+            .size(110.dp, 150.dp)
+            .background(Color(0xffb2766b))
+    ) {
+        Text(
+            text = "BLANK\nCARD",
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun DeckUI() {
+    Box(
+        modifier = Modifier
+            .size(110.dp, 150.dp)
+            .background(Color(0xff1c0e0b))
+    ) {
+        Text(
+            text = "DECK",
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun PlayerHands() {
+    Box(
+        modifier = Modifier
+            .size(250.dp, 90.dp)
+            .background(Color(0xffb2766b))
+    ) {
+        Text(
+            text = "PLAYER\nHAND",
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun OpponentHands() {
+    Box(
+        modifier = Modifier
+            .size(250.dp, 90.dp)
+            .background(Color(0xff1c0e0b))
+    ) {
+        Text(
+            text = "OPPONENT\nHAND",
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Preview(showBackground = true, device = "spec:orientation=landscape,width=411dp,height=891dp")
 @Composable
 fun GreetingPreview() {
     BoomBoomFrontendTheme {
-        Greeting("Android")
+        ArrangementUI()
     }
 }
