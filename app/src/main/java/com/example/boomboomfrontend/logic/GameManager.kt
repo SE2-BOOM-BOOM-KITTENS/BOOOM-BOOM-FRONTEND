@@ -1,6 +1,8 @@
 package com.example.boomboomfrontend.logic
 
-import com.example.boomboomfrontend.model.*
+import com.example.boomboomfrontend.model.Card
+import com.example.boomboomfrontend.model.Player
+import com.example.boomboomfrontend.model.CardType
 
 class GameManager(
     private val cardManager: CardManager,
@@ -12,19 +14,17 @@ class GameManager(
     //Wird zu Beginn des Spielzugs aufgerufen
     fun startTurn(player: Player) {
         currentPlayer = player
-        println("---- ${player.name}'s Zug hat begonnen ----")
         println("Welche Karte möchtest du spielen? (0 bis ${player.hand.lastIndex})")
         val index = readLine()?.toIntOrNull()
 
         if (index != null && index in player.hand.indices) {
             val card = player.hand[index]
-            val success = cardManager.playCard(card, player)
+            val success = cardManager.playCard(card, player, this)
             if (success) {
                 println("Du spielst: ${card.name}")
-                card.play(this, player)
             }
         } else {
-            println("Ungültige Eingabe.")
+            println("Keine Karte gespielt. Du kannst nun eine Karte ziehen.")
         }
     }
 
@@ -35,15 +35,11 @@ class GameManager(
         //Karte ziehen
         val drawn = cardManager.drawCard()
 
-        handleDrawnCard(drawn, player)
+        val effect = CardEffectRegistry.getEffect(drawn.type)
+        effect.apply(player, this)
 
         println("---- ${player.name}'s Zug wurde beendet ----")
         currentPlayer = null
-    }
-
-    //Falls Exploding Kittens gezogen wird - noch anzupassen
-    private fun handleDrawnCard(card: Card, player: Player) {
-
     }
 
     fun returnCardToDeckAt(card: Card, position: Int) {
