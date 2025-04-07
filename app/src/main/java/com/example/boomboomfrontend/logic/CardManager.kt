@@ -29,6 +29,11 @@ class CardManager {
     fun playCard(card: Card, player: Player): Boolean {
         return if (player.hand.remove(card)) {
             discardPile.add(card)
+
+            // Neue Logik: Effekt aus Registry holen und ausführen
+            val effect = CardEffectRegistry.getEffect(card.type)
+            effect.apply(player, gameManager)
+
             true
         } else false
     }
