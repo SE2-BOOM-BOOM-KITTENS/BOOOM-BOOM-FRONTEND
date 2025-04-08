@@ -3,7 +3,6 @@ package com.example.boomboomfrontend.logic
 import com.example.boomboomfrontend.model.Card
 import com.example.boomboomfrontend.model.CardType
 import com.example.boomboomfrontend.model.Player
-import kotlin.random.Random
 
 class CardManager {
 
@@ -23,7 +22,7 @@ class CardManager {
 
     fun drawCard(): Card? = if (deck.isNotEmpty()) deck.removeFirst() else null
 
-    fun playCard(card: Card, player: Player): Boolean {
+    fun playCard(card: Card, player: Player, gameManager: GameManager): Boolean {
         return if (player.hand.remove(card)) {
             discardPile.add(card)
 
