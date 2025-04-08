@@ -6,6 +6,8 @@ import org.junit.jupiter.api.assertThrows
 import com.example.boomboomfrontend.logic.CardEffectRegistry
 import com.example.boomboomfrontend.model.CardType
 import com.example.boomboomfrontend.logic.effects.*
+import org.junit.Assert.assertTrue
+
 
 class CardEffectRegistryTest {
 
