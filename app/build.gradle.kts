@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.boomboomfrontend"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.boomboomfrontend"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -100,6 +100,8 @@ android {
 
 
 dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("org.hildan.krossbow:krossbow-websocket-okhttp:7.0.0")
     implementation("org.hildan.krossbow:krossbow-stomp-core:7.0.0")
     implementation("org.hildan.krossbow:krossbow-websocket-builtin:7.0.0")
@@ -113,6 +115,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

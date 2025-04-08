@@ -13,6 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
 import com.example.boomboomfrontend.logic.Lobby
 import com.example.boomboomfrontend.model.ConnectionStatus
 import com.example.boomboomfrontend.model.Player
@@ -23,7 +28,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BoomBoomFrontendTheme {
-                LobbyScreen()
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "lobby") {
+                    composable("lobby") { LobbyScreen(navController) }
+                    composable("test-server") { ServerTestActivity() }
+                }
             }
         }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -32,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LobbyScreen() {
+fun LobbyScreen(navController: NavHostController) {
     var name by remember { mutableStateOf("") }
     var lobby: Lobby? by remember { mutableStateOf(null) }
     var joined by remember { mutableStateOf(false) }
@@ -45,7 +54,7 @@ fun LobbyScreen() {
 
         Button(onClick = {
             if (name.isNotBlank()) {
-                val host = Player(name, ConnectionStatus.JOINED)
+                val host = Player(id = "0", name, ConnectionStatus.JOINED)
                 lobby = Lobby(host, maxPlayers = 4)
             }
         }) {
@@ -61,7 +70,7 @@ fun LobbyScreen() {
         Spacer(Modifier.height(8.dp))
 
         Button(onClick = {
-            val p = Player(name = "Player", ConnectionStatus.NOT_CONNECTED)
+            val p = Player(id = "1", name = "Player", ConnectionStatus.NOT_CONNECTED)
             if (lobby?.joinLobby(p) == true) {
                 joined = true
             }
@@ -71,7 +80,16 @@ fun LobbyScreen() {
 
         Spacer(Modifier.height(16.dp))
         Text("Status: ${if (joined) "Beigetreten" else "Nicht verbunden"}")
+
+        Spacer(Modifier.height(16.dp))
+
+        Button(onClick = {
+            navController.navigate("test-server")
+        }) {
+            Text("Zum Server/Client Test")
+        }
     }
+
 }
 
 @Composable
