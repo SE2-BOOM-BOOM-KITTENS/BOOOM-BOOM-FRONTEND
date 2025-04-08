@@ -10,6 +10,7 @@ import com.example.boomboomfrontend.logic.GameManager
 import com.example.boomboomfrontend.model.Player
 import com.example.boomboomfrontend.model.Card
 import com.example.boomboomfrontend.model.CardType
+import com.example.boomboomfrontend.logic.Lobby
 
 class GameActivity : ComponentActivity() {
 
@@ -18,8 +19,9 @@ class GameActivity : ComponentActivity() {
 
     private lateinit var gameManager: GameManager
     private lateinit var cardManager: CardManager
-    private lateinit var players: MutableList<Player>
     private var currentPlayerIndex = 0
+
+    val players = intent.getParcelableArrayListExtra<Player>("PLAYERS") ?: mutableListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +31,6 @@ class GameActivity : ComponentActivity() {
         // View-Verknüpfung
         drawButton = findViewById(R.id.button_draw)
         statusText = findViewById(R.id.text_status)
-
-        // Spieler aus Lobby über Intent empfangen
-        players = intent.getParcelableArrayListExtra("PLAYERS") ?: mutableListOf()
 
         // Wenn keine Spieler übergeben wurden, abbrechen
         if (players.isEmpty()) {

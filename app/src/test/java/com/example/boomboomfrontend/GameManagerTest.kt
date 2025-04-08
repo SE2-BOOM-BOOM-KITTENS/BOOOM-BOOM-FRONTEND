@@ -13,7 +13,12 @@ class GameManagerTest {
 
     @BeforeEach
     fun setup() {
-        testPlayer = Player("Test", mutableListOf(BlankCard()))
+        testPlayer = Player(
+            id = "1",
+            name = "Test",
+            status = ConnectionStatus.JOINED,
+            hand = mutableListOf()
+        )
         players = mutableListOf(testPlayer)
         cardManager = CardManager()
         cardManager.initializeDeck(players)

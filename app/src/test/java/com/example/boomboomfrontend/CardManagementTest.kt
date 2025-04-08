@@ -14,7 +14,14 @@ class CardManagementTest {
     @BeforeEach
     fun setup() {
         //Spieler mit einer BLANK-Karte ausstatten
-        testPlayer = Player("Test", mutableListOf(BlankCard()))
+        testPlayer = Player(
+            id = "1",
+            name = "Test",
+            status = ConnectionStatus.JOINED,
+            hand = mutableListOf()
+        )
+
+        players = mutableListOf(testPlayer)
         players = mutableListOf(testPlayer)
         cardManager = CardManager()
         cardManager.initializeDeck(players)
@@ -35,7 +42,7 @@ class CardManagementTest {
         val card = Card(CardType.BLANK)
         testPlayer.hand.add(card)
 
-        val result = cardManager.playCard(card, testPlayer)
+        val result = cardManager.playCard(card, testPlayer, gameManager)
 
         assertTrue(result, "Card should be successfully played")
         assertFalse(testPlayer.hand.contains(card), "Card should be removed from hand")
