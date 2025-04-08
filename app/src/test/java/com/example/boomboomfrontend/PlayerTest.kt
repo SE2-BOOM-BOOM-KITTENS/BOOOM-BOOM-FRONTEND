@@ -9,7 +9,7 @@ class PlayerTest {
 
     @Test
     fun `player starts alive and has defuse`(){
-        val player = Player (id = 1.toString(), name = "Player1", defuseCount = 1, isAlive = true, status = ConnectionStatus.JOINED)
+        val player = Player (id = 1.toString(), name = "Player1", status = ConnectionStatus.JOINED ,defuseCount = 1, isAlive = true)
 
         val hasCard = player.hasDefuseCard()
 
@@ -20,7 +20,7 @@ class PlayerTest {
 
     @Test
     fun `useDefuseCard decreases count`(){
-        val player = Player (id = 2.toString(), name = "Player2", defuseCount = 2, isAlive = true, status = ConnectionStatus.JOINED)
+        val player = Player (id = 2.toString(), name = "Player2", status = ConnectionStatus.JOINED , defuseCount = 2, isAlive = true)
 
         val used = player.useDefuseCard()
 
@@ -30,7 +30,7 @@ class PlayerTest {
 
     @Test
     fun `useDefuseCard fails when none available`(){
-        val player = Player (id = 3.toString(), name = "Player3", defuseCount = 0, isAlive = true, status = ConnectionStatus.JOINED)
+        val player = Player (id = 3.toString(), name = "Player3", status = ConnectionStatus.JOINED ,defuseCount = 0, isAlive = true)
 
         val used = player.useDefuseCard()
 
@@ -41,7 +41,7 @@ class PlayerTest {
 
     @Test
     fun `hasDefuseCard fails when none available`(){
-        val player = Player (id = 4.toString(), name = "Player4", defuseCount = 0, isAlive = true, status = ConnectionStatus.JOINED)
+        val player = Player (id = 4.toString(), name = "Player4", status = ConnectionStatus.JOINED  ,defuseCount = 0, isAlive = true)
 
         val hasCard = player.hasDefuseCard()
 
@@ -51,7 +51,7 @@ class PlayerTest {
 
     @Test
     fun `addDefuseCard increases count`(){
-        val player = Player (id = 5.toString(), name = "Player5", defuseCount = 0, isAlive = true, status = ConnectionStatus.JOINED)
+        val player = Player (id = 5.toString(), name = "Player5", status = ConnectionStatus.JOINED , defuseCount = 0, isAlive = true)
 
         player.addDefuseCard()
 
