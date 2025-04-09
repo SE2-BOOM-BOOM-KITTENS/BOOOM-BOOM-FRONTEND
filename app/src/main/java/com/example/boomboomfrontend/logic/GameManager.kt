@@ -35,7 +35,7 @@ class GameManager(
             val card = player.hand[index]
             val success = cardManager.playCard(card, player, this)
             if (success) {
-                println("Du spielst: ${card.name}")
+                println("Du spielst: ${card.type}")
             }
         } else {
             println("Keine Karte gespielt. Du kannst nun eine Karte ziehen.")
